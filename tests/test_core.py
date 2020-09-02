@@ -102,3 +102,9 @@ class TestCoreVCF(unittest.TestCase):
         self.assertEqual(len(self.vcf), len(self.vcf.rows))
         self.assertEqual(self.vcf[0], self.vcf.rows[0])
         self.assertEqual(self.vcf[0], self.vcfrow1)
+
+    def test_different_vcfs(self):
+        vcfrow = self.vcfrow1
+        vcfrow.ref = 'T'
+        new_vcf = VCF(rows=[vcfrow])
+        self.assertNotEqual(self.vcf, new_vcf)

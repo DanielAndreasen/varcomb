@@ -83,5 +83,11 @@ class VCF:
     def __getitem__(self, x: int) -> VCFrow:
         return self.rows[x]
 
-    def remove_duplicates(self):
+    def __eq__(self, other):
+        for row in self.rows:
+            if row not in other.rows:
+                return False
+        return True
+
+    def remove_true_duplicates(self):
         return VCF(sorted(list(set(self.rows))))
