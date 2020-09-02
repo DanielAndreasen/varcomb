@@ -1,3 +1,5 @@
+![CI](https://github.com/DanielAndreasen/varcomb/workflows/CI/badge.svg?branch=master)
+
 # varcomb
 
 This is a tool to work with VCF files, and to combine VCF files from different callers.
