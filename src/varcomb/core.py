@@ -91,3 +91,19 @@ class VCF:
 
     def remove_true_duplicates(self):
         return VCF(sorted(list(set(self.rows))))
+
+    def remove_loc_dup(self):
+        rows: List[VCFrow] = [row for row in self.rows]
+        completed = False
+        while not completed:
+            for row in rows:
+                mask = [row.loc == r.loc for r in rows]
+                if sum(mask) > 1:
+                    mask[mask.index(True)] = False
+                    rows = [row for row, m in zip(rows, mask) if not m]
+                    break
+                if sum(mask) == 1:
+                    completed = True
+            else:
+                break
+        return VCF(sorted(list(set(rows))))

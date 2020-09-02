@@ -18,7 +18,19 @@ class TestMergeVCF(unittest.TestCase):
         vcf = self.vcf1 + self.vcf2
         self.assertEqual(vcf, parse_vcf_file(self.vcf_file1 + self.vcf_file2))
 
-    def test_remove_duplicates(self):
+    def test_remove_true_duplicates(self):
         vcf = self.vcf1 + self.vcf2
-        vcf_dup = vcf.remove_duplicates()
+        vcf_dup = vcf.remove_true_duplicates()
         self.assertEqual(vcf_dup, self.vcf1)
+
+    def test_remove_duplicates_at_same_loc(self):
+        vcf_loc_dup = ['\t'.join(['chr1', '186478', '.', 'T', 'G', '.', '', '', '', '', ''])]
+        vcf = parse_vcf_file(vcf_loc_dup) + self.vcf1
+        vcf_rem_true_dup = vcf.remove_true_duplicates()
+        vcf_rem_loc_dup = vcf.remove_loc_dup()
+
+        self.assertEqual(len(vcf), len(self.vcf1) + len(vcf_loc_dup))
+        self.assertEqual(len(vcf_rem_true_dup), len(vcf))
+        self.assertEqual(vcf_rem_true_dup, vcf)
+
+        self.assertEqual(len(vcf_rem_loc_dup), len(self.vcf1))
