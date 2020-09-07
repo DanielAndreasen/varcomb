@@ -79,7 +79,8 @@ class VCF:
         return len(self.rows)
 
     def __add__(self, other):
-        return VCF(self.rows + other.rows)
+        # TODO: Merge headers
+        return VCF(self.rows + other.rows, header=self.header)
 
     def __getitem__(self, x: int) -> VCFrow:
         return self.rows[x]
@@ -91,17 +92,17 @@ class VCF:
         return True
 
     def get_from_chrom(self, chrom):
-        return VCF([row for row in self.rows if row.loc.chrom == chrom])
+        return VCF([row for row in self.rows if row.loc.chrom == chrom], header=self.header)
 
     def get_near_location(self, chrom, pos, tol=50):
         rows = []
         for row in self.get_from_chrom(chrom):
             if (pos - tol < row.loc.pos) and (row.loc.pos < pos + tol):
                 rows.append(row)
-        return VCF(rows)
+        return VCF(rows, header=self.header)
 
     def remove_true_duplicates(self):
-        return VCF(sorted(list(set(self.rows))))
+        return VCF(sorted(list(set(self.rows))), header=self.header)
 
     def remove_loc_dup(self):
         rows: List[VCFrow] = [row for row in self.rows]
