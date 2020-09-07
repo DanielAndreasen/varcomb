@@ -88,7 +88,7 @@ class TestCoreVCF(unittest.TestCase):
 
     def setUp(self):
         loc1 = Location(chrom='chr2', pos=21)
-        loc2 = Location(chrom='chr16', pos=543245)
+        loc2 = Location(chrom='chr16', pos=50)
         self.vcfrow1 = VCFrow(loc=loc1, id='id1', ref='G', alt='A', qual='.',
                               filter='PASS', info='info', format='format',
                               samples=['sample1', 'sample2'])
@@ -108,3 +108,10 @@ class TestCoreVCF(unittest.TestCase):
         vcfrow.ref = 'T'
         new_vcf = VCF(rows=[vcfrow])
         self.assertNotEqual(self.vcf, new_vcf)
+
+    def test_get_from_chrom(self):
+        vcf = self.vcf + self.vcf
+        chrom = 'chr2'
+        vcf_chrom2 = vcf.get_from_chrom(chrom)
+        self.assertEqual(len(vcf_chrom2), 2)
+        self.assertEqual(vcf_chrom2[0].loc.chrom, chrom)

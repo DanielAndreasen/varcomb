@@ -89,6 +89,9 @@ class VCF:
                 return False
         return True
 
+    def get_from_chrom(self, chrom):
+        return VCF([row for row in self.rows if row.loc.chrom == chrom])
+
     def remove_true_duplicates(self):
         return VCF(sorted(list(set(self.rows))))
 
