@@ -128,4 +128,15 @@ class VCF:
                     completed = True
             else:
                 break
-        return VCF(sorted(list(set(rows))))
+        return VCF(sorted(list(set(rows))), header=self.header)
+
+    def to_file(self, fname):
+        header = '\n'.join(self.header) if self.header is not None else ''
+        rows = []
+        for row in self.rows:
+            rows.append(row._format_row())
+
+        rows = '\n'.join(rows)
+        data = f'{header}\n{rows}'
+        with open(fname, 'w') as f:
+            f.write(data)
