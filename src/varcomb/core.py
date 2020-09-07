@@ -92,6 +92,13 @@ class VCF:
     def get_from_chrom(self, chrom):
         return VCF([row for row in self.rows if row.loc.chrom == chrom])
 
+    def get_near_location(self, chrom, pos, tol=50):
+        rows = []
+        for row in self.get_from_chrom(chrom):
+            if (pos - tol < row.loc.pos) and (row.loc.pos < pos + tol):
+                rows.append(row)
+        return VCF(rows)
+
     def remove_true_duplicates(self):
         return VCF(sorted(list(set(self.rows))))
 

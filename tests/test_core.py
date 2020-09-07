@@ -115,3 +115,13 @@ class TestCoreVCF(unittest.TestCase):
         vcf_chrom2 = vcf.get_from_chrom(chrom)
         self.assertEqual(len(vcf_chrom2), 2)
         self.assertEqual(vcf_chrom2[0].loc.chrom, chrom)
+
+    def test_get_near_location(self):
+        chrom = 'chr16'
+        pos = 55
+        vcf1 = self.vcf.get_near_location(chrom, pos, tol=10)
+        vcf2 = self.vcf.get_near_location(chrom, pos, tol=2)
+        vcf3 = self.vcf.get_near_location('chr2', pos, tol=10)
+        self.assertEqual(len(vcf1), 1)
+        self.assertEqual(len(vcf2), 0)
+        self.assertEqual(len(vcf3), 0)
