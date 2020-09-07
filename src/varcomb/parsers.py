@@ -12,4 +12,5 @@ def _parse_vcf_line(line: str) -> VCFrow:
 
 
 def parse_vcf_file(stream: List[str]) -> VCF:
-    return VCF([_parse_vcf_line(row) for row in stream])
+    return VCF(rows=[_parse_vcf_line(row) for row in stream if not row.startswith('#')],
+               header=[row for row in stream if row.startswith('#')])

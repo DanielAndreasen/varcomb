@@ -73,6 +73,7 @@ class VCFrow:
 @dataclass
 class VCF:
     rows: List[VCFrow]
+    header: Optional[List[str]] = None
 
     def __len__(self):
         return len(self.rows)

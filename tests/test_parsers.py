@@ -33,3 +33,9 @@ class TestParserVcfFile(unittest.TestCase):
         self.assertIsInstance(vcf, VCF)
         self.assertEqual(len(vcf), len(self.vcf_file))
         self.assertEqual(vcf[0], _parse_vcf_line(self.vcf_file[0]))
+
+    def test_parse_vcf_file_with_header(self):
+        header = ['# This is a header', '# Multiline header here']
+        vcf = parse_vcf_file(header + self.vcf_file)
+        self.assertEqual(len(vcf), len(self.vcf_file))
+        self.assertEqual(len(vcf.header), len(header))

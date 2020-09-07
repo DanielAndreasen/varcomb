@@ -103,6 +103,12 @@ class TestCoreVCF(unittest.TestCase):
         self.assertEqual(self.vcf[0], self.vcf.rows[0])
         self.assertEqual(self.vcf[0], self.vcfrow1)
 
+    def test_vcf_with_header(self):
+        header = '# This is a header'
+        vcf = VCF(rows=[self.vcfrow1, self.vcfrow2], header=header)
+        self.assertIsNotNone(vcf.header)
+        self.assertEqual(len(vcf), 2)
+
     def test_different_vcfs(self):
         vcfrow = self.vcfrow1
         vcfrow.ref = 'T'
