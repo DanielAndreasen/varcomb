@@ -1,5 +1,4 @@
-from setuptools import setup, find_packages
-
+from setuptools import find_packages, setup
 
 setup(
 
@@ -12,7 +11,7 @@ setup(
     test_suite='tests',
 
     entry_points={
-        'console_scripts': ['somaseq = somaseq.client:run']
+        'console_scripts': ['varcomb = varcomb.client:run']
     },
 
     python_requires='>=3.8',
