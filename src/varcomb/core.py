@@ -79,6 +79,12 @@ class VCF:
     rows: List[VCFrow]
     header: Optional[List[str]] = None
 
+    def __str__(self):  # pragma: no cover
+        o = ''
+        for row in self.rows:
+            o += str(row) + '\n'
+        return o
+
     def __len__(self):
         return len(self.rows)
 
