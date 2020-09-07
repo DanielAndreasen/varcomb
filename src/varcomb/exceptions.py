@@ -4,3 +4,7 @@ class LocationShiftError(Exception):
 
 class LocationDifferentChromosomeError(Exception):
     pass
+
+
+class VCFFileNotSupported(Exception):
+    pass
