@@ -69,6 +69,10 @@ class VCFrow:
     def __hash__(self):
         return hash((self.loc, self.id, self.ref, self.alt, self.qual, self.filter, self.info, self.format))
 
+    def _format_row(self):
+        res = [self.loc.chrom, self.loc.pos, self.id, self.ref, self.alt, self.qual, self.filter, self.info, self.format]
+        return '\t'.join(map(str, res + self.samples))
+
 
 @dataclass
 class VCF:

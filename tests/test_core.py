@@ -83,6 +83,13 @@ class TestCoreVCFrow(unittest.TestCase):
         self.assertEqual(self.vcfrow.format, 'format')
         self.assertEqual(self.vcfrow.samples, ['sample1', 'sample2'])
 
+    def test_format_line(self):
+        actual = self.vcfrow._format_row()
+        row = [self.vcfrow.loc.chrom, self.vcfrow.loc.pos, self.vcfrow.id, self.vcfrow.ref,
+               self.vcfrow.alt, self.vcfrow.qual, self.vcfrow.filter, self.vcfrow.info, self.vcfrow.format]
+        expected = '\t'.join(map(str, row + self.vcfrow.samples))
+        self.assertEqual(actual, expected)
+
 
 class TestCoreVCF(unittest.TestCase):
 
