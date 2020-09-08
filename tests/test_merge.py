@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from varcomb.parsers import parse_vcf_file
@@ -33,3 +34,26 @@ class TestMergeVCF(unittest.TestCase):
         self.assertEqual(vcf_rem_true_dup, vcf)
 
         self.assertEqual(len(vcf_rem_loc_dup), len(self.vcf1))
+
+
+class TestMergeVCFToFile(unittest.TestCase):
+    def setUp(self):
+        self.vcf_file1 = [
+            '\t'.join(['chr1', '16688', '.', 'G', 'A', '.', '', '', '', '', '']),
+            '\t'.join(['chr1', '186478', '.', 'A', 'G', '.', '', '', '', '', '']),
+            '\t'.join(['chr1', '16577291', '.', 'T', 'C', '.', '', '', '', '', ''])]
+
+        self.vcf1 = parse_vcf_file(self.vcf_file1)
+        self.vcf2 = parse_vcf_file(self.vcf_file1)
+
+    def tearDown(self):
+        fname = self.fname
+        if os.path.exists(fname):
+            os.remove(fname)
+
+    def test_save_to_file(self):
+        vcf = self.vcf1 + self.vcf2
+        vcf_merged = vcf.remove_true_duplicates()
+        self.fname = 'test.vcf'
+        vcf_merged.to_file(self.fname)
+        self.assertTrue(os.path.exists(self.fname))
