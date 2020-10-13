@@ -171,7 +171,7 @@ class VCF:
 
         rows = '\n'.join(rows)
         data = f'{header}\n{rows}'
-        with open(fname, 'w') as f:
+        with open(fname.replace('.gz', ''), 'w') as f:
             f.write(data)
 
     def annotate(self, value: str):
