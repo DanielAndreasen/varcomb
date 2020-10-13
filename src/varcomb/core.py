@@ -51,6 +51,35 @@ class Location:
         return self + shift
 
 
+class Info:
+    def __init__(self, info):
+        if info == '':
+            self.info = dict()
+        else:
+            self.info = {k.split('=')[0]: k.split('=')[1] for k in info.split(';')}
+
+    def __eq__(self, other):
+        return self.info == other.info
+
+    def __len__(self):
+        return len(self.info)
+
+    def __getitem__(self, key):
+        return self.info[key]
+
+    def __setitem__(self, key, value):
+        self.info[key] = value
+
+    def __str__(self):
+        return ';'.join([f'{k}={v}' for k, v in self.info.items()])
+
+    def keys(self):
+        return self.info.keys()
+
+    def values(self):
+        return self.info.values()
+
+
 @dataclass
 class VCFrow:
     loc: Location
@@ -59,7 +88,7 @@ class VCFrow:
     alt: str
     qual: str
     filter: str
-    info: str
+    info: Info
     format: str
     samples: List[str]
 
@@ -67,10 +96,10 @@ class VCFrow:
         return self.loc < other.loc
 
     def __hash__(self):
-        return hash((self.loc, self.id, self.ref, self.alt, self.qual, self.filter, self.info, self.format))
+        return hash((self.loc, self.id, self.ref, self.alt, self.qual, self.filter, self.format))
 
     def _format_row(self):
-        res = [self.loc.chrom, self.loc.pos, self.id, self.ref, self.alt, self.qual, self.filter, self.info, self.format]
+        res = [self.loc.chrom, self.loc.pos, self.id, self.ref, self.alt, self.qual, self.filter, str(self.info), self.format]
         return '\t'.join(map(str, res + self.samples))
 
 
@@ -82,7 +111,7 @@ class VCF:
     def __str__(self):  # pragma: no cover
         o = ''
         for row in self.rows:
-            o += str(row) + '\n'
+            o += row._format_row() + '\n'
         return o
 
     def __len__(self):

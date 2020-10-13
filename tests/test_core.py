@@ -1,6 +1,6 @@
 import unittest
 
-from varcomb.core import VCF, Location, VCFrow
+from varcomb.core import VCF, Info, Location, VCFrow
 from varcomb.exceptions import LocationShiftError
 
 
@@ -62,6 +62,37 @@ class TestCoreLocation(unittest.TestCase):
         loc1 = Location(chrom='Y', pos=42)
         loc2 = Location(chrom='4', pos=1001)
         self.assertEqual(loc2 > loc1, False)
+
+
+class TestCoreInfo(unittest.TestCase):
+
+    def setUp(self):
+        self.loc = Location(chrom='chr1', pos=42)
+        self.info = Info('k1=v1;k2=v2;k3=v3')
+        self.vcfrow = VCFrow(loc=self.loc, id='1234', ref='A', alt='G', qual='.',
+                             filter='PASS', info=self.info, format='format',
+                             samples=['sample1', 'sample2'])
+
+    def test_infofield(self):
+        self.assertIsInstance(self.vcfrow.info, Info)
+        self.assertEqual(len(self.vcfrow.info), 3)
+        self.assertIn('k1', self.vcfrow.info.keys())
+        self.assertIn('v2', self.vcfrow.info.values())
+
+    def test_infofield_add(self):
+        self.vcfrow.info['k4'] = 'v4'
+        self.assertEqual(len(self.vcfrow.info), 4)
+        self.assertIn('k4', self.vcfrow.info.keys())
+        self.assertIn('v4', self.vcfrow.info.values())
+
+    def test_infofield_get(self):
+        self.assertEqual(self.vcfrow.info['k1'], 'v1')
+        self.assertEqual(self.vcfrow.info['k2'], 'v2')
+        self.assertEqual(self.vcfrow.info['k3'], 'v3')
+
+    def test_infofield_to_str(self):
+        self.assertIsInstance(str(self.vcfrow.info), str)
+        self.assertEqual(str(self.vcfrow.info), 'k1=v1;k2=v2;k3=v3')
 
 
 class TestCoreVCFrow(unittest.TestCase):
