@@ -1,6 +1,6 @@
 import unittest
 
-from varcomb.core import VCF, Location
+from varcomb.core import VCF, Info, Location
 from varcomb.parsers import _parse_vcf_line, parse_vcf_file
 
 
@@ -15,7 +15,7 @@ class TestParserVcfLine(unittest.TestCase):
         self.assertEqual(vcfrow.alt, 'A')
         self.assertEqual(vcfrow.qual, '.')
         self.assertEqual(vcfrow.filter, 'map_qual;normal_artifact;strand_bias')
-        self.assertEqual(vcfrow.info, 'AS_FilterStatus=map_qual,strand_bias;AS_SB_TABLE=327,30|0,13;DP=380;ECNT=3;GERMQ=93;MBQ=37,34;MFRL=260,332;MMQ=22,22;MPOS=21;NALOD=-1.391e+00;NLOD=43.74;POPAF=6.00;ROQ=80;TLOD=7.68')
+        self.assertEqual(vcfrow.info, Info('AS_FilterStatus=map_qual,strand_bias;AS_SB_TABLE=327,30|0,13;DP=380;ECNT=3;GERMQ=93;MBQ=37,34;MFRL=260,332;MMQ=22,22;MPOS=21;NALOD=-1.391e+00;NLOD=43.74;POPAF=6.00;ROQ=80;TLOD=7.68'))
         self.assertEqual(vcfrow.format, 'GT:AD:AF:DP:F1R2:F2R1:SB')
         self.assertEqual(vcfrow.samples, ['0/0:180,4:0.026:184:99,1:80,3:165,15,0,4', '0/1:177,9:0.052:186:98,4:77,5:162,15,0,9'])
 
