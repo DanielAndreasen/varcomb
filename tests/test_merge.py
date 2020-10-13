@@ -57,3 +57,19 @@ class TestMergeVCFToFile(unittest.TestCase):
         self.fname = 'test.vcf'
         vcf_merged.to_file(self.fname)
         self.assertTrue(os.path.exists(self.fname))
+
+
+class TestMergeAnnotate(unittest.TestCase):
+    def setUp(self):
+        self.vcf_file1 = [
+            '\t'.join(['chr1', '16688', '.', 'G', 'A', '.', '', '', '', '', '']),
+            '\t'.join(['chr1', '186478', '.', 'A', 'G', '.', '', '', '', '', '']),
+            '\t'.join(['chr1', '16577291', '.', 'T', 'C', '.', '', '', '', '', ''])]
+
+        self.vcf1 = parse_vcf_file(self.vcf_file1)
+        self.vcf2 = parse_vcf_file(self.vcf_file1)
+
+    def test_merge_annotate(self):
+        vcf = self.vcf1.annotate('vcf1') + self.vcf2.annotate('vcf2')
+        self.assertEqual(list(vcf[0].info.values()), ['vcf1'])
+        self.assertEqual(list(vcf[-1].info.values()), ['vcf2'])

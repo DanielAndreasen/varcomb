@@ -169,3 +169,10 @@ class VCF:
         data = f'{header}\n{rows}'
         with open(fname, 'w') as f:
             f.write(data)
+
+    def annotate(self, value: str):
+        rows: List[VCFrow] = [row for row in self.rows]
+        for i, row in enumerate(rows):
+            row.info['annotation'] = value
+            rows[i] = row
+        return VCF(sorted(rows), header=self.header)
