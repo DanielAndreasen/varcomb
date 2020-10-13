@@ -29,8 +29,13 @@ def merge_vcfs(ctx, vcf_file1, vcf_file2, vcf_out, ann_vcf1=None, ann_vcf2=None)
         vcf1 = vcf1.annotate(ann_vcf1)
     if ann_vcf2 is not None:
         vcf2 = vcf2.annotate(ann_vcf2)
+
+    logging.info('Merging VCFs...')
     vcf = vcf1 + vcf2
+    n1 = len(vcf)
     vcf = vcf.remove_true_duplicates()
+    n2 = len(vcf)
+    logging.info(f'{n1-n2} duplicates removed')
     vcf.to_file(vcf_out)
 
 
