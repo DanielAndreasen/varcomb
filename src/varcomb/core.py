@@ -53,10 +53,14 @@ class Location:
 
 class Info:
     def __init__(self, info):
-        if info == '':
-            self.info = dict()
-        else:
-            self.info = {k.split('=')[0]: k.split('=')[1] for k in info.split(';')}
+        self.info = dict()
+        if info != '':
+            for k in info.split(';'):
+                if '=' in k:
+                    key, value = k.split('=')
+                    self.info[key] = value
+                else:
+                    self.info[k] = True
 
     def __eq__(self, other):
         return self.info == other.info

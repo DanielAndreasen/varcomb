@@ -94,6 +94,12 @@ class TestCoreInfo(unittest.TestCase):
         self.assertIsInstance(str(self.vcfrow.info), str)
         self.assertEqual(str(self.vcfrow.info), 'k1=v1;k2=v2;k3=v3')
 
+    def test_infofield_no_value(self):
+        info = Info('k1=v1;k2=v2;k3=v3;field1;field2')
+        self.assertEqual(len(info), 5)
+        self.assertEqual(info['field1'], True)
+        self.assertEqual(info['field2'], True)
+
 
 class TestCoreVCFrow(unittest.TestCase):
 
