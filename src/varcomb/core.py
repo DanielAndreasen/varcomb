@@ -53,34 +53,54 @@ class Location:
 
 class Info:
     def __init__(self, info):
-        self.info = dict()
-        if info != '':
-            for k in info.split(';'):
-                if '=' in k:
-                    key, value = k.split('=')
-                    self.info[key] = value
-                else:
-                    self.info[k] = True
+        self.info = info
+
+    def _convert_to_dict(self, info):
+        if isinstance(info, str):
+            self.info = dict()
+            if info != '':
+                for k in info.split(';'):
+                    if '=' in k:
+                        key, value = k.split('=')
+                        self.info[key] = value
+                    else:
+                        self.info[k] = True
 
     def __eq__(self, other):
         return self.info == other.info
 
     def __len__(self):
+        if isinstance(self.info, str):
+            if ';' in self.info:
+                return self.info.count(';') + 1
+            return 0
         return len(self.info)
 
     def __getitem__(self, key):
+        self._convert_to_dict(self.info)
         return self.info[key]
 
     def __setitem__(self, key, value):
-        self.info[key] = value
+        if isinstance(self.info, str):
+            if ';' in self.info:
+                self.info += f';{key}={value}'
+            else:
+                self.info += f'{key}={value}'
+        else:
+            self.info[key] = value
 
     def __str__(self):
-        return ';'.join([f'{k}={v}' for k, v in self.info.items()])
+        if isinstance(self.info, str):
+            return self.info
+        else:
+            return ';'.join([f'{k}={v}' for k, v in self.info.items()])
 
     def keys(self):
+        self._convert_to_dict(self.info)
         return self.info.keys()
 
     def values(self):
+        self._convert_to_dict(self.info)
         return self.info.values()
 
 
