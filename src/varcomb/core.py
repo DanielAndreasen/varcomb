@@ -14,6 +14,7 @@ def as_int(x):
 
 @dataclass
 class Location:
+    __slots__ = 'chrom', 'pos'
     chrom: str
     pos: int
 
@@ -52,6 +53,8 @@ class Location:
 
 
 class Info:
+    __slots__ = 'info'
+
     def __init__(self, info):
         self.info = info
 
@@ -106,6 +109,7 @@ class Info:
 
 @dataclass
 class VCFrow:
+    __slots__ = 'loc', 'id', 'ref', 'alt', 'qual', 'filter', 'info', 'format', 'samples'
     loc: Location
     id: str
     ref: str
