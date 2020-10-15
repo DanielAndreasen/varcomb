@@ -32,8 +32,10 @@ $ varcomb merge-vcfs \
     --ann_vcf1 FIRST \ # Optional
     --ann_vcf2 SECOND  # Optional
 ```
-This will generate a combined VCF called `combined.vcf`. Note that `varcomb` does not
-compress the final VCF file. It is recommended the user does this:
+This will generate a combined VCF called `combined.vcf`. Here `ann_vcf` is a
+way to annotate the respective VCF file in the info field with
+`Annotation=FIRST`.  Note that `varcomb` does not compress the final VCF file.
+It is recommended the user does this:
 
 ```bash
 $ bgzip combined.vcf
