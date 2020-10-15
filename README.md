@@ -4,8 +4,6 @@
 
 This is a tool to work with VCF files, and to combine VCF files from different callers.
 
-**NOTE**: This is very much a work in progress.
-
 
 # Installation
 The current recommend way of installing `varcomb` is using `pip`:
